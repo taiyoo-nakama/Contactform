@@ -7,36 +7,51 @@ use App\Models\Contact;
 
 class ContactController extends Controller
 {
-    public function index(){
-        
+    public function index(Request $request){
+
         return view('index');
     }
     public function confirm(Request $request)
     {
-        $validate_rule=[
+        $request->validate([
             'fullname' => 'required',
-        ];
-        
-        $inputs = $request->all();
-        return view('confirm', ['inputs' => $inputs,]);
+            'middlename' => 'required',
+            'gender' => 'required',
+            'email' => 'required|email',
+            'postcode' => 'required',
+            'address' => 'required',
+            'opinion' => 'required',
+        ]);
+        $items = $request->all();
+        return view('confirm', ['items' => $items,]);
     }
-    
-    public function find(Request $request)
+    public function thanks(Request $request)
     {
-        return view('find',['input' => '']);
+        if($request->action === 'back'){
+            return redirect()->route('index')->withInput($items);
+        }
+        return view('thanks');
     }
-    public function search(Request $request)
-    {
-        $item = Contact::find($request->input);
+    public function host(Request $request){
+        $items = Contact::all();
+        return view('host',['items' => $items]);
+    }
+    public function search(Request $request){
+        $item = Contact::where('name','LIKE',"%{$request->input}%")->get();
+        $item = Contact::where('date','LIKE',"%{$request->input}%")->get();
+        $item = Contact::where('gender','LIKE',"%{$request->input}%")->get();
+        $item = Contact::where('email','LIKE',"%{$request->input}%")->get();
         $param = [
             'input' => $request->input,
             'item' => $item
         ];
-        return view('find',$param);
+        return redirect('host',$param);
     }
-    public function thanks(Request $request)
+    public function bind(Contact $contact)
     {
-        return view('thanks');
+        $data = [
+            'item'=>$contact,
+        ];
+        return view('contact.binds',$data);
     }
-
 }

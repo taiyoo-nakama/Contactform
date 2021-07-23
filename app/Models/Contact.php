@@ -9,9 +9,8 @@ class Contact extends Model
 {
     use HasFactory;
 
-    protected $guarded = array('id');
-
-    public static $rules = array(
-        'content' => required|max20,
-    );
+    public function getData(){
+        $txt = $this->id.':'.$this->name.'('.$this->age.')';
+        return $txt;
+    }
 }
