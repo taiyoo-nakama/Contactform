@@ -35,22 +35,22 @@ class ContactController extends Controller
     public function host(Request $request)
     {
         $items = Contact::Paginate(10);
-        return view('host',['items' => $items]);
+        return view('host', ['items' => $items]);
     }
     public function find()
     {
         return view('find',['input' => '']);
     }
     public function search(Request $request){
-        $item = Contact::where('name','LIKE',"%{$request->input}%")->get();
-        $item = Contact::where('date','LIKE',"%{$request->input}%")->get();
+        $item = Contact::where('fullname','LIKE',"%{$request->input}%")->get();
+        $item = Contact::where('updated_at','LIKE',"%{$request->input}%")->get();
         $item = Contact::where('gender','LIKE',"%{$request->input}%")->get();
         $item = Contact::where('email','LIKE',"%{$request->input}%")->get();
         $param = [
             'input' => $request->input,
             'item' => $item
         ];
-        return view('find',$param);
+        return view('host',$param);
     }
     public function bind(Contact $contact)
     {
