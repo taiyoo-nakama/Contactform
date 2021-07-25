@@ -109,6 +109,21 @@ h1{
     text-align:center;
     margin: 30px
   }
+  tr {
+      height: 50px;
+    }
+td{
+  margin:50px;
+}
+.btn{
+  display: inline-block;
+      text-align:center;
+      background-color:black;
+      color:white;
+      width:100px;
+      padding:10px 20px;
+      border-radius:5px;
+}
 
 </style>
 
@@ -197,11 +212,12 @@ h1{
         </tr>
       </table>
       
-      <button type="submit">
+      <button type="submit" class="btn">
         送信
       </button>
       <a href="/">修正する</a>
     </form>
     </form>
+  </div>
   </body>
 </html>

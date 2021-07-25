@@ -200,7 +200,7 @@ table {
 
     <!--ページ変遷!-->
     <div class="pagination">
-      {{ $item->links() }}
+      {{ $items->links() }}
     </div>
     <!--顧客情報表示!-->
     <div class="serch_result">
