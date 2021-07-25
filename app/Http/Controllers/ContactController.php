@@ -8,8 +8,8 @@ use App\Models\Contact;
 class ContactController extends Controller
 {
     public function index(Request $request){
-
-        return view('index');
+        $items = Contact::all();
+        return view('index',['items'=>$items]);
     }
     public function confirm(Request $request)
     {
@@ -32,9 +32,14 @@ class ContactController extends Controller
         }
         return view('thanks');
     }
-    public function host(Request $request){
-        $items = Contact::all();
+    public function host(Request $request)
+    {
+        $items = Contact::Paginate(10);
         return view('host',['items' => $items]);
+    }
+    public function find()
+    {
+        return view('find',['input' => '']);
     }
     public function search(Request $request){
         $item = Contact::where('name','LIKE',"%{$request->input}%")->get();
@@ -45,7 +50,7 @@ class ContactController extends Controller
             'input' => $request->input,
             'item' => $item
         ];
-        return redirect('host',$param);
+        return view('find',$param);
     }
     public function bind(Contact $contact)
     {
@@ -53,5 +58,20 @@ class ContactController extends Controller
             'item'=>$contact,
         ];
         return view('contact.binds',$data);
+    }
+    public function add(){
+        return redirect('/');
+    }
+    public function create(Request $request)
+    {
+        $this->validate($request,Contact::$rules);
+        $form = $request->all();
+        Contact::create($form);
+        return redirect('host');
+    }
+    public function delete(Request $request)
+    {
+        Contact::find($request ->id)->delete();
+        return redirect('host');
     }
 }

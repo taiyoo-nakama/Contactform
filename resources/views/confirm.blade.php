@@ -21,6 +21,7 @@
     @endif
   </div>
   <form method="post" action="{{ route('contact.thanks')}}">
+  <form method="post" action="/host/create">
     @csrf
     
     <table>
@@ -95,6 +96,7 @@
         送信
       </button>
       <a href="/">修正する</a>
+    </form>
     </form>
   </body>
 </html>

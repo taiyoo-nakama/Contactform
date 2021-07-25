@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Contact::factory(35);
+        Contact::factory()->count(35)->create();
 
     }
 }

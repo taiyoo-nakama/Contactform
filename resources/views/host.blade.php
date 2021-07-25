@@ -6,12 +6,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+<style>
+  .pagination{
+    display: flex;
+    justify-content: flex-end;
+  }
+  .pagination li{
+    list-style: none;
+  }
+  svg.w-5.h-5 {  /*paginateメソッドの矢印の大きさ調整のために追加*/
+    width: 20px;
+    height: 20px;
+    }
+</style>
 <body>
   <!-- @section('content') !-->
   <div class="container">
     <h1>管理システム</h1>
+    @if(count($errors)>0)
+      <ul>
+        @foreach($errors->all() as $error)
+        <li>
+          {{$error}}
+        </li>
+        @endforeach
+      </ul>
+    @endif
     <table>
-      <form method="post" >
+      <form method="post" action="host">
       <tr>
         <th>お名前</th>
         <td><input type="text" name="fullname" value="{{request('search')}}"></td>
@@ -36,13 +58,15 @@
     </table>
     <button>検索</button>
     <a href="/host">リセット</a>
-  </form>
-    
-    <div class="count">全件中　-件</div>
+  　</form>
+
+   
     <!--ページ変遷!-->
-    <div></div>
+    <div class="pagination">
+      {{$items->links()}}
+    </div>
     <!--顧客情報表示!-->
-    
+
     <table>
       <tr>
         <th>ID</th>
@@ -52,37 +76,40 @@
         <th>ご意見</th>
       </tr>
 
-      @if($items->count())
       <tr>
         @foreach($items as $item)
       <form method="post" action="{{ route('host')}}">
         @csrf
         <!--ID取得!-->
         <td>
-          {{$tems->id}}
+          {{$item->id}}
         </td>
         <!--お名前!-->
         <td>
-          {{$items->fullname}}{{$items->middlename}}
+          {{$item->fullname}}{{$item->middlename}}
         </td>
         <!--性別!-->
         <td>
-          {{$items->gender}}
+          {{$item->gender}}
         </td>
           <!--メールアドレス!-->
         <td>
-          {{$items->email}}
+          {{$item->email}}
         </td>
         <!--ご意見!-->
         <td>
-          {{$items->opinion}}
+          {{$item->opinion}}
+        </td>
+        <td>
+      </form>
+      <form action="{{route('delete',['id' => $item->id])}}" method="post">
+        @csrf
+        <button>削除</button>
+      </form>
         </td>
       </tr>
       @endforeach
     </table>
-    @else
-    <p>見つかりませんでした。</p>
-    @endif
-  </form>
+
 </body>
 </html>

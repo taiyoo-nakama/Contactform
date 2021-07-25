@@ -9,6 +9,13 @@ class Contact extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'fullname','gender','date','email',
+    ];
+
+    public static $rules = array(
+        //
+    );
     public function getData(){
         $txt = $this->id.':'.$this->name.'('.$this->age.')';
         return $txt;
